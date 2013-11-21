@@ -57,6 +57,13 @@
         </js-module>
     </platform>  
     
+    <!-- tizen -->
+    <platform name="tizen">
+        <js-module src="src/tizen/CameraProxy.js" name="CameraProxy">
+            <runs />
+        </js-module>
+    </platform>
+
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
