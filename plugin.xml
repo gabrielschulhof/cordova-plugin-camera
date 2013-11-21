@@ -62,6 +62,9 @@
         <js-module src="src/tizen/CameraProxy.js" name="CameraProxy">
             <runs />
         </js-module>
+        <config-file target="config.xml" parent="/*">
+            <tizen:privilege name="http://tizen.org/privilege/mediacapture"/>
+        </config-file>
     </platform>
 
     <!-- android -->
