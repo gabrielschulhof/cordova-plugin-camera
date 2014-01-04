@@ -24,7 +24,7 @@
 var Camera = require('org.apache.cordova.camera.Camera');
 
 module.exports = {
-	getPicture: function( successCallback, errorCallback, args ) {
+	takePicture: function( successCallback, errorCallback, arguments ) {
 		var index, argumentsHash = {},
 			keys = [
 				"quality", "destinationType", "sourceType", "targetWidth", "targetHeight",
