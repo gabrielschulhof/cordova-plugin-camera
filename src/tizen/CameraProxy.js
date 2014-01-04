@@ -23,79 +23,21 @@
 
 var Camera = require('org.apache.cordova.camera.Camera');
 
-function cameraMakeReplyCallback(successCallback, errorCallback) {
-	return {
-		onsuccess: function( reply ) {
-			if ( reply.length > 0 ) {
-				successCallback( reply[0].value );
-			}
-			else {
-				errorCallback('Picture selection aborted');
-			}
-		},
-		onfail: function() {
-			console.log( 'The service launch failed' );
-		}
-	};
-}
-
 module.exports = {
 	getPicture: function( successCallback, errorCallback, args ) {
-		var mimeType, serviceId, serviceControl,
-			destinationType = args[1],
-			sourceType = args[2],
-			encodingType = args[5],
-			mediaType = args[6];
+		var index, argumentsHash = {},
+			keys = [
+				"quality", "destinationType", "sourceType", "targetWidth", "targetHeight",
+				"encodingType", "mediaType", "allowEdit", "correctOrientation", "saveToPhotoAlbum",
+				"popoverOptions", "cameraDirection"
+			];
 
-		// Not supported
-		// quality = args[0]
-		// targetWidth = args[3]
-		// targetHeight = args[4]
-		// allowEdit = args[7]
-		// correctOrientation = args[8]
-		// saveToPhotoAlbum = args[9]
-
-		if (destinationType !== Camera.DestinationType.FILE_URI) {
-			errorCallback('DestinationType not supported');
-			return;
+		// Re-create the arguments hash
+		for ( index in keys ) {
+			if ( arguments[ index ] < arguments.length ) {
+				argumentsHash[ keys[ index ] ] = arguments[ index ];
+			}
 		}
-
-		if (mediaType !== Camera.MediaType.PICTURE) {
-			errorCallback('MediaType not supported');
-			return;
-		}
-
-		if (encodingType === Camera.EncodingType.JPEG) {
-			mimeType = 'image/jpeg';
-		}
-		else if (encodingType === Camera.EncodingType.PNG) {
-			mimeType = 'image/png';
-		}
-		else {
-			mimeType = 'image/*';
-		}
-
-		if (sourceType === Camera.PictureSourceType.CAMERA) {
-			serviceId = 'http://tizen.org/appcontrol/operation/create_content';
-		}
-		else {
-			serviceId = 'http://tizen.org/appcontrol/operation/pick';
-		}
-
-		serviceControl = new tizen.ApplicationControl(
-			serviceId,
-			null,
-			mimeType,
-			null );
-
-		tizen.application.launchAppControl(
-			serviceControl,
-			null,
-			null,
-			function( error ) {
-				errorCallback( error.message );
-			},
-			cameraMakeReplyCallback( successCallback, errorCallback ) );
 	},
 	cleanup: function(){}
 };
